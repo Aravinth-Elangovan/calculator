@@ -26,6 +26,8 @@ var KEY_CODE_SLASH = 47;
 var KEY_CODE_ZERO = 48;
 var KEY_CODE_NINE = 57;
 var KEY_CODE_EQUAL = 61;
+var KEY_CODE_N = 78;
+var KEY_CODE_P = 80;
 
 /*
  * checkDelKey() function checks whether Delete or Backspace key is pressed
@@ -206,11 +208,11 @@ function prevNxtValue(value) {
 function prevNxtKey(e) {
 
     switch (e.keyCode) {
-        case 78:
+        case KEY_CODE_N:
             //n key pressed
             prevNxtValue(1);
             break;
-        case 80:
+        case KEY_CODE_P:
             //p key pressed
             prevNxtValue(-1);
             break;
@@ -227,19 +229,19 @@ function addValueByKey(keyValue) {
         symArrayIndex++;
         // inserting symbols into the array based on ASCII values
         switch (keyValue) {
-            case 42:
+            case KEY_CODE_ASTERISK:
                 // '*' key pressed
                 arraySymbol[symArrayIndex] = '*';
                 break;
-            case 43:
+            case KEY_CODE_PLUS:
                 // '+' key pressed
                 arraySymbol[symArrayIndex] = '+';
                 break;
-            case 45:
+            case KEY_CODE_MINUS:
                 // '-' key pressed
                 arraySymbol[symArrayIndex] = '-';
                 break;
-            case 47:
+            case KEY_CODE_MINUS:
                 // '/' key pressed
                 arraySymbol[symArrayIndex] = '/';
                 break;
