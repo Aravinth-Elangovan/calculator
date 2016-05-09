@@ -9,9 +9,10 @@
 <head>
     <title>Calculator</title>
     <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+    <script type="text/javascript" src="script.js"></script>
 </head>
 
-<body onkeydown="countDelKey(event); return prevNxtKey(event)">
+<body onkeydown="countDeleteKey(event); return prevNxtKey(event)">
     <div id="calcLayout">
         <h3>Calculator</h3>
         <form name="calc">
@@ -20,42 +21,41 @@
                     <td colspan="4"><input type="text" name="display" id="historyDisplay" disabled="true"></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><input type="text" name="display" id="mainDisplay" onkeypress="return blockChar(event)" autofocus></td>
+                    <td colspan="4"><input type="text" name="display" id="mainDisplay" onkeypress="return restrictCharacter(event)" autofocus></td>
                 </tr>
                 <tr>
-                    <td><input id="prevButton" type="button" value="Prev" onclick="prevNxtValue(-1)"></td>
-                    <td><input id="nextButton" type="button" value="Next" onclick="prevNxtValue(1)"></td>
-                    <td><input type="button" value="Del" onclick="delValue()"></td>
-                    <td><input type="button" value="AC" onclick="clearValue('')"></td>
+                    <td><input id="prevButton" type="button" value="Prev" onclick="traverseValue(-1)"></td>
+                    <td><input id="nextButton" type="button" value="Next" onclick="traverseValue(1)"></td>
+                    <td><input type="button" value="Del" onclick="removeValue()"></td>
+                    <td><input type="button" value="AC" onclick="clearAllValue('')"></td>
                 </tr>
                 <tr>
-                    <td><input type="button" value="7" onclick="addValue('7')"></td>
-                    <td><input type="button" value="8" onclick="addValue('8')"></td>
-                    <td><input type="button" value="9" onclick="addValue('9')"></td>
-                    <td><input type="button" value="+" onclick="addValue('+')"></td>
+                    <td><input type="button" value="7" onclick="showValueInMainDisplay('7')"></td>
+                    <td><input type="button" value="8" onclick="showValueInMainDisplay('8')"></td>
+                    <td><input type="button" value="9" onclick="showValueInMainDisplay('9')"></td>
+                    <td><input type="button" value="+" onclick="showValueInMainDisplay('+')"></td>
                 </tr>
                 <tr>
-                    <td><input type="button" value="4" onclick="addValue('4')"></td>
-                    <td><input type="button" value="5" onclick="addValue('5')"></td>
-                    <td><input type="button" value="6" onclick="addValue('6')"></td>
-                    <td><input type="button" value="-" onclick="addValue('-')"></td>
+                    <td><input type="button" value="4" onclick="showValueInMainDisplay('4')"></td>
+                    <td><input type="button" value="5" onclick="showValueInMainDisplay('5')"></td>
+                    <td><input type="button" value="6" onclick="showValueInMainDisplay('6')"></td>
+                    <td><input type="button" value="-" onclick="showValueInMainDisplay('-')"></td>
                 </tr>
                 <tr>
-                    <td><input type="button" value="1" onclick="addValue('1')"></td>
-                    <td><input type="button" value="2" onclick="addValue('2')"></td>
-                    <td><input type="button" value="3" onclick="addValue('3')"></td>
-                    <td><input type="button" value="*" onclick="addValue('*')"></td>
+                    <td><input type="button" value="1" onclick="showValueInMainDisplay('1')"></td>
+                    <td><input type="button" value="2" onclick="showValueInMainDisplay('2')"></td>
+                    <td><input type="button" value="3" onclick="showValueInMainDisplay('3')"></td>
+                    <td><input type="button" value="*" onclick="showValueInMainDisplay('*')"></td>
                 </tr>
                 <tr>
-                    <td><input type="button" value="." onclick="addValue('.')"></td>
-                    <td><input type="button" value="0" onclick="addValue('0')"></td>
-                    <td><input type="button" value="=" onclick="result(isDeletePressed)"></td>
-                    <td><input type="button" value="/" onclick="addValue('/')"></td>
+                    <td><input type="button" value="." onclick="showValueInMainDisplay('.')"></td>
+                    <td><input type="button" value="0" onclick="showValueInMainDisplay('0')"></td>
+                    <td><input type="button" value="=" onclick="calculateResult(isDeletePressed)"></td>
+                    <td><input type="button" value="/" onclick="showValueInMainDisplay('/')"></td>
                 </tr>
             </table>
         </form>
     </div>
-    <script type="text/javascript" src="script.js"></script>
 </body>
 
 </html>

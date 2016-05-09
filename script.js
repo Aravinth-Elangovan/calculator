@@ -13,44 +13,42 @@ var currentIndexLocation = 0;
 var isDeletePressed = false;
 var isEqualPressed = false;
 var keyboardKeyPressed = 0;
-var historyDisplay = document.getElementById("historyDisplay");
-var mainDisplay = document.getElementById("mainDisplay");
 // CONSTANTS
-var KEY_CODE_BACKSPACE = 8;
-var KEY_CODE_ASTERISK = 42;
-var KEY_CODE_PLUS = 43;
-var KEY_CODE_COMMA = 44;
-var KEY_CODE_MINUS = 45;
-var KEY_CODE_DELETE = 46;
-var KEY_CODE_SLASH = 47;
-var KEY_CODE_ZERO = 48;
-var KEY_CODE_NINE = 57;
-var KEY_CODE_EQUAL = 61;
-var KEY_CODE_N = 78;
-var KEY_CODE_P = 80;
+var BACKSPACE_ASCII_VALUE = 8;
+var ASTERISK_ASCII_VALUE = 42;
+var PLUS_ASCII_VALUE = 43;
+var COMMA_ASCII_VALUE = 44;
+var MINUS_ASCII_VALUE = 45;
+var DELETE_ASCII_VALUE = 46;
+var SLASH_ASCII_VALUE = 47;
+var ZERO_ASCII_VALUE = 48;
+var NINE_ASCII_VALUE = 57;
+var EQUAL_ASCII_VALUE = 61;
+var N_ASCII_VALUE = 78;
+var P_ASCII_VALUE = 80;
 
 /*
- * checkDelKey() function checks whether Delete or Backspace key is pressed
+ * countDeleteKey() function checks whether Delete or Backspace key is pressed
  */
-function countDelKey(event) {
-    if (event.keyCode === KEY_CODE_BACKSPACE || event.keyCode === KEY_CODE_DELETE) {
+function countDeleteKey(event) {
+    if (event.keyCode === BACKSPACE_ASCII_VALUE || event.keyCode === DELETE_ASCII_VALUE) {
         isDeletePressed = true;
         isEqualPressed = false;
     }
 }
 
 /*
- * checkChar() function restricts the textbox to display numbers and operators
+ * restrictCharacter() function restricts the textbox to display numbers and operators
  */
-function blockChar(event) {
-    if ((event.keyCode >= KEY_CODE_ASTERISK) && (event.keyCode <= KEY_CODE_NINE) && (event.keyCode !== KEY_CODE_COMMA)) {
+function restrictCharacter(event) {
+    if ((event.keyCode >= ASTERISK_ASCII_VALUE) && (event.keyCode <= NINE_ASCII_VALUE) && (event.keyCode !== COMMA_ASCII_VALUE)) {
         // allows only numbers and +,-,*,/ symbols to display
         event.returnValue = true;
-        addValueByKey(event.keyCode);
-    } else if (event.keyCode === KEY_CODE_EQUAL) {
+        showValueInMainDisplayByKey(event.keyCode);
+    } else if (event.keyCode === EQUAL_ASCII_VALUE) {
         // restricts '=' sign to show in display
         event.returnValue = false;
-        return result(isDeletePressed);
+        return calculateResult(isDeletePressed);
     } else {
         // restricts all other keys
         event.returnValue = false;
@@ -58,14 +56,15 @@ function blockChar(event) {
 }
 
 /*
- * addValue() function Add values to the display of the Calculator 
+ * showValueInMainDisplay() function Show values in the Calculator main display 
  */
-function addValue(buttonValue) {
-    addValueToDisplay(buttonValue);
+function showValueInMainDisplay(buttonValue) {
+    var mainDisplay = document.getElementById("mainDisplay");
+    showValueInHistoryDisplay(buttonValue);
     // buttonValue is a number isNaN() returns false
     if (isNaN(buttonValue) === false) {
         var tempButtonValue = buttonValue % 10;
-        addDigits(tempButtonValue);
+        addDigitsToNumberArray(tempButtonValue);
     } else if (digitLength !== 0) {
         // buttonValue is a Symbol, this block is executed
         isOperatorPressed = true;
@@ -84,9 +83,11 @@ function addValue(buttonValue) {
 }
 
 /*
- * addValueToDisplay() adds value to the history display each time from main display
+ * showValueInHistoryDisplay() adds value to the history display each time from main display
  */
-function addValueToDisplay(buttonValue) {
+function showValueInHistoryDisplay(buttonValue) {
+    var historyDisplay = document.getElementById("historyDisplay");
+    var mainDisplay = document.getElementById("mainDisplay");
     if ((isNaN(buttonValue) === true) && isEqualPressed === false) {
         historyDisplay.value += mainDisplay.value;
     } else if (digitLength === 0) {
@@ -96,9 +97,10 @@ function addValueToDisplay(buttonValue) {
 }
 
 /*
- * delValue() deletes a digit from the display
+ * removeValue() deletes a digit from the display
  */
-function delValue() {
+function removeValue() {
+    var mainDisplay = document.getElementById("mainDisplay");
     var displayValue = mainDisplay.value;
     if (displayValue.length > 0) {
         displayValue = displayValue.substring(0, displayValue.length - 1);
@@ -110,9 +112,11 @@ function delValue() {
 }
 
 /*
- * clearValue() function deletes all the values in the display
+ * clearAllValue() function deletes all the values in the display
  */
-function clearValue() {
+function clearAllValue() {
+    var historyDisplay = document.getElementById("historyDisplay");
+    var mainDisplay = document.getElementById("mainDisplay");
     //resetting all the values
     historyDisplay.value = '';
     mainDisplay.value = '';
@@ -129,9 +133,9 @@ function clearValue() {
     keyboardKeyPressed = 0;
 }
 /*
- *  addDigits() function adds a add digits as Values to the arrayNum[]
+ *  addDigitsToNumberArray() function adds a add digits as Values to the arrayNumber[]
  */
-function addDigits(buttonValue) {
+function addDigitsToNumberArray(buttonValue) {
     if (isOperatorPressed === true) {
         //if the number is single digit, this block is executed
         digitLength = 1;
@@ -158,9 +162,11 @@ function addDigits(buttonValue) {
 }
 
 /*
- * result() function calculates the result based on the inputs
+ * calculateResult() function calculates the result based on the inputs
  */
-function result(resultDelButton) {
+function calculateResult(resultDelButton) {
+    var historyDisplay = document.getElementById("historyDisplay");
+    var mainDisplay = document.getElementById("mainDisplay");
     var tempValue = 0;
     if (resultDelButton === true) {
         arrayNumber[currentIndexLocation] = mainDisplay.value;
@@ -193,9 +199,10 @@ function result(resultDelButton) {
 }
 
 /*
- * prevNxtValue() function is to check values entered by the user for Re-checking
+ * traverseValue() function is to check values entered by the user for Re-checking
  */
-function prevNxtValue(value) {
+function traverseValue(value) {
+    var mainDisplay = document.getElementById("mainDisplay");
     if ((currentIndexLocation !== 0 && value === -1) || (currentIndexLocation < arrayNumber.length - 1 && value === 1)) {
         mainDisplay.value = arrayNumber[currentIndexLocation + value];
         currentIndexLocation = currentIndexLocation + value;
@@ -206,15 +213,14 @@ function prevNxtValue(value) {
  * prevNxtKey() traverses previous and next values using P ans N keys
  */
 function prevNxtKey(e) {
-
     switch (e.keyCode) {
-        case KEY_CODE_N:
-            // 'n' key pressed
-            prevNxtValue(1);
+        case N_ASCII_VALUE:
+            //n key pressed
+            traverseValue(1);
             break;
-        case KEY_CODE_P:
-            // 'p' key pressed
-            prevNxtValue(-1);
+        case P_ASCII_VALUE:
+            //p key pressed
+            traverseValue(-1);
             break;
     }
 }
@@ -222,26 +228,27 @@ function prevNxtKey(e) {
 /*
  * addValueByKey() Add values to the display when keyboard key is pressed
  */
-function addValueByKey(keyValue) {
-    if (keyValue === KEY_CODE_ASTERISK || keyValue === KEY_CODE_PLUS || keyValue === KEY_CODE_MINUS || keyValue === KEY_CODE_SLASH) {
+function showValueInMainDisplayByKey(keyValue) {
+    var mainDisplay = document.getElementById("mainDisplay");
+    if (keyValue === ASTERISK_ASCII_VALUE || keyValue === PLUS_ASCII_VALUE || keyValue === MINUS_ASCII_VALUE || keyValue === SLASH_ASCII_VALUE) {
         numArrayIndex++;
         isOperatorPressed = true;
         symArrayIndex++;
         // inserting symbols into the array based on ASCII values
         switch (keyValue) {
-            case KEY_CODE_ASTERISK:
+            case ASTERISK_ASCII_VALUE:
                 // '*' key pressed
                 arraySymbol[symArrayIndex] = '*';
                 break;
-            case KEY_CODE_PLUS:
+            case PLUS_ASCII_VALUE:
                 // '+' key pressed
                 arraySymbol[symArrayIndex] = '+';
                 break;
-            case KEY_CODE_MINUS:
+            case MINUS_ASCII_VALUE:
                 // '-' key pressed
                 arraySymbol[symArrayIndex] = '-';
                 break;
-            case KEY_CODE_MINUS:
+            case MINUS_ASCII_VALUE:
                 // '/' key pressed
                 arraySymbol[symArrayIndex] = '/';
                 break;
@@ -252,8 +259,8 @@ function addValueByKey(keyValue) {
         }
     } else {
         // inserting numbers into the number array
-        var buttonValue = keyValue - KEY_CODE_ZERO;
-        addDigits(buttonValue);
+        var buttonValue = keyValue - ZERO_ASCII_VALUE;
+        addDigitsToNumberArray(buttonValue);
     }
     keyboardKeyPressed = 1;
 }
