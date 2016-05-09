@@ -209,11 +209,11 @@ function prevNxtKey(e) {
 
     switch (e.keyCode) {
         case KEY_CODE_N:
-            //n key pressed
+            // 'n' key pressed
             prevNxtValue(1);
             break;
         case KEY_CODE_P:
-            //p key pressed
+            // 'p' key pressed
             prevNxtValue(-1);
             break;
     }
