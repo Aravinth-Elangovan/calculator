@@ -14,24 +14,24 @@ var isDeletePressed = false;
 var isEqualPressed = false;
 var keyboardKeyPressed = 0;
 // CONSTANTS
-var BACKSPACE_ASCII_VALUE = 8;
-var ASTERISK_ASCII_VALUE = 42;
-var PLUS_ASCII_VALUE = 43;
-var COMMA_ASCII_VALUE = 44;
-var MINUS_ASCII_VALUE = 45;
-var DELETE_ASCII_VALUE = 46;
-var SLASH_ASCII_VALUE = 47;
-var ZERO_ASCII_VALUE = 48;
-var NINE_ASCII_VALUE = 57;
-var EQUAL_ASCII_VALUE = 61;
-var N_ASCII_VALUE = 78;
-var P_ASCII_VALUE = 80;
+var ASCII_VALUE_BACKSPACE = 8;
+var ASCII_VALUE_ASTERISK = 42;
+var ASCII_VALUE_PLUS = 43;
+var ASCII_VALUE_COMMA = 44;
+var ASCII_VALUE_MINUS = 45;
+var ASCII_VALUE_DELETE = 46;
+var ASCII_VALUE_SLASH = 47;
+var ASCII_VALUE_ZERO = 48;
+var ASCII_VALUE_NINE = 57;
+var ASCII_VALUE_EQUAL = 61;
+var ASCII_VALUE_N = 78;
+var ASCII_VALUE_P = 80;
 
 /*
  * countDeleteKey() function checks whether Delete or Backspace key is pressed
  */
 function countDeleteKey(event) {
-    if (event.keyCode === BACKSPACE_ASCII_VALUE || event.keyCode === DELETE_ASCII_VALUE) {
+    if (event.keyCode === ASCII_VALUE_BACKSPACE || event.keyCode === ASCII_VALUE_DELETE) {
         isDeletePressed = true;
         isEqualPressed = false;
     }
@@ -41,11 +41,11 @@ function countDeleteKey(event) {
  * restrictCharacter() function restricts the textbox to display numbers and operators
  */
 function restrictCharacter(event) {
-    if ((event.keyCode >= ASTERISK_ASCII_VALUE) && (event.keyCode <= NINE_ASCII_VALUE) && (event.keyCode !== COMMA_ASCII_VALUE)) {
+    if ((event.keyCode >= ASCII_VALUE_ASTERISK) && (event.keyCode <= ASCII_VALUE_NINE) && (event.keyCode !== ASCII_VALUE_COMMA)) {
         // allows only numbers and +,-,*,/ symbols to display
         event.returnValue = true;
         showValueInMainDisplayByKey(event.keyCode);
-    } else if (event.keyCode === EQUAL_ASCII_VALUE) {
+    } else if (event.keyCode === ASCII_VALUE_EQUAL) {
         // restricts '=' sign to show in display
         event.returnValue = false;
         return calculateResult(isDeletePressed);
@@ -214,11 +214,11 @@ function traverseValue(value) {
  */
 function prevNxtKey(e) {
     switch (e.keyCode) {
-        case N_ASCII_VALUE:
+        case ASCII_VALUE_N:
             //n key pressed
             traverseValue(1);
             break;
-        case P_ASCII_VALUE:
+        case ASCII_VALUE_P:
             //p key pressed
             traverseValue(-1);
             break;
@@ -230,25 +230,25 @@ function prevNxtKey(e) {
  */
 function showValueInMainDisplayByKey(keyValue) {
     var mainDisplay = document.getElementById("mainDisplay");
-    if (keyValue === ASTERISK_ASCII_VALUE || keyValue === PLUS_ASCII_VALUE || keyValue === MINUS_ASCII_VALUE || keyValue === SLASH_ASCII_VALUE) {
+    if (keyValue === ASCII_VALUE_ASTERISK || keyValue === ASCII_VALUE_PLUS || keyValue === ASCII_VALUE_MINUS || keyValue === ASCII_VALUE_SLASH) {
         numArrayIndex++;
         isOperatorPressed = true;
         symArrayIndex++;
         // inserting symbols into the array based on ASCII values
         switch (keyValue) {
-            case ASTERISK_ASCII_VALUE:
+            case ASCII_VALUE_ASTERISK:
                 // '*' key pressed
                 arraySymbol[symArrayIndex] = '*';
                 break;
-            case PLUS_ASCII_VALUE:
+            case ASCII_VALUE_PLUS:
                 // '+' key pressed
                 arraySymbol[symArrayIndex] = '+';
                 break;
-            case MINUS_ASCII_VALUE:
+            case ASCII_VALUE_MINUS:
                 // '-' key pressed
                 arraySymbol[symArrayIndex] = '-';
                 break;
-            case MINUS_ASCII_VALUE:
+            case ASCII_VALUE_MINUS:
                 // '/' key pressed
                 arraySymbol[symArrayIndex] = '/';
                 break;
@@ -259,7 +259,7 @@ function showValueInMainDisplayByKey(keyValue) {
         }
     } else {
         // inserting numbers into the number array
-        var buttonValue = keyValue - ZERO_ASCII_VALUE;
+        var buttonValue = keyValue - ASCII_VALUE_ZERO;
         addDigitsToNumberArray(buttonValue);
     }
     keyboardKeyPressed = 1;
