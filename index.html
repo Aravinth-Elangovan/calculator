@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<!-- 
+    Created on : Mar 26, 2016, 10:22:07 AM
+    Author     : Aravinth Elangovan
+-->
+<html>
+
+<head>
+    <title>Calculator</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+
+<body onkeydown="countDelKey(event); return prevNxtKey(event)">
+    <div id="calcLayout">
+        <h3>Calculator</h3>
+        <form name="calc">
+            <table id="calcElements">
+                <tr>
+                    <td colspan="4"><input type="text" name="display" id="historyDisplay" disabled="true"></td>
+                </tr>
+                <tr>
+                    <td colspan="4"><input type="text" name="display" id="mainDisplay" onkeypress="return blockChar(event)" autofocus></td>
+                </tr>
+                <tr>
+                    <td><input id="prevButton" type="button" value="Prev" onclick="prevNxtValue(-1)"></td>
+                    <td><input id="nextButton" type="button" value="Next" onclick="prevNxtValue(1)"></td>
+                    <td><input type="button" value="Del" onclick="delValue()"></td>
+                    <td><input type="button" value="AC" onclick="clearValue('')"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" value="7" onclick="addValue('7')"></td>
+                    <td><input type="button" value="8" onclick="addValue('8')"></td>
+                    <td><input type="button" value="9" onclick="addValue('9')"></td>
+                    <td><input type="button" value="+" onclick="addValue('+')"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" value="4" onclick="addValue('4')"></td>
+                    <td><input type="button" value="5" onclick="addValue('5')"></td>
+                    <td><input type="button" value="6" onclick="addValue('6')"></td>
+                    <td><input type="button" value="-" onclick="addValue('-')"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" value="1" onclick="addValue('1')"></td>
+                    <td><input type="button" value="2" onclick="addValue('2')"></td>
+                    <td><input type="button" value="3" onclick="addValue('3')"></td>
+                    <td><input type="button" value="*" onclick="addValue('*')"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" value="." onclick="addValue('.')"></td>
+                    <td><input type="button" value="0" onclick="addValue('0')"></td>
+                    <td><input type="button" value="=" onclick="result(isDeletePressed)"></td>
+                    <td><input type="button" value="/" onclick="addValue('/')"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <script type="text/javascript" src="script.js"></script>
+</body>
+
+</html>

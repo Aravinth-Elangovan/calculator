@@ -1,0 +1,49 @@
+/* 
+    Created on : Mar 23, 2016, 2:24:00 PM
+    Author     : Aravinth Elangovan
+*/
+
+#calcLayout {
+    width: 250px;
+    height: 270px;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    background: #D0D3D4;
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+
+#historyDisplay {
+    height: 30px;
+    font-size: 20px;
+    margin-top: -9px;
+    margin-bottom: -6px;
+    border: transparent;
+    border-color: #fff;
+    background-color: #fff;
+    text-align: right;
+    outline: none;
+    
+}
+
+#mainDisplay {
+    height: 40px;
+    font-size: 35px;
+    border: transparent;
+    text-align: right;
+    outline: none;
+}
+
+#calcElements tr input:first-child{
+    width: 98%;
+}
+
+#calcElements tr input{
+    width: 100%;
+}
+#calcElements tr:nth-child(3) input:hover ,#calcElements tr:nth-child(4) input:hover ,#calcElements tr:nth-child(5) input:hover, #calcElements tr:nth-child(5) input:hover,#calcElements tr:nth-child(6) input:hover , #calcElements tr:nth-child(7) input:hover{
+    background: #D0D3D4;
+}
