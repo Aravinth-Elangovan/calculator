@@ -10,9 +10,3 @@ Acceptance Criteria
 8.Main display logs each entry from the user, either it is a number or an operator.
 9.While checking previous values, if there is no change the user can give their next input without any deletion.
 10.Reset option is available to clear all values after finishing calculation.
-
-
-Backlogs:
-1.Operators in the history is also to be changed.
-2.User can completely remove some values selectedly from the history.
-3.Floating values is to be managed.
