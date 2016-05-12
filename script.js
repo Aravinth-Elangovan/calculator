@@ -4,15 +4,15 @@
 */
 var arrayNumber = [];
 var arraySymbol = [];
-var isOperatorPressed = true;
 var digitLength = 1;
 var numArrayIndex = 0;
 var symArrayIndex = 0;
 var actualValue = 0;
+var operatorCount = 0;
 var currentIndexLocation = 0;
+var isOperatorPressed = true;
 var isDeletePressed = false;
 var isEqualPressed = false;
-var keyboardKeyPressed = 0;
 // CONSTANTS
 var ASCII_VALUE_BACKSPACE = 8;
 var ASCII_VALUE_ASTERISK = 42;
@@ -28,9 +28,9 @@ var ASCII_VALUE_N = 78;
 var ASCII_VALUE_P = 80;
 
 /*
- * countDeleteKey() function checks whether Delete or Backspace key is pressed
+ * monitorBackspaceDeleteKeys() function checks whether Delete or Backspace key is pressed
  */
-function countDeleteKey(event) {
+function monitorBackspaceDeleteKeys(event) {
     if (event.keyCode === ASCII_VALUE_BACKSPACE || event.keyCode === ASCII_VALUE_DELETE) {
         isDeletePressed = true;
         isEqualPressed = false;
@@ -38,22 +38,26 @@ function countDeleteKey(event) {
 }
 
 /*
- * restrictCharacter() function restricts the textbox to display numbers and operators
+ * restrictsCharacter() function restricts the textbox to display numbers and operators
  */
-function restrictCharacter(event) {
+function restrictsCharacter(event) {
     if ((event.keyCode >= ASCII_VALUE_ASTERISK) && (event.keyCode <= ASCII_VALUE_NINE) && (event.keyCode !== ASCII_VALUE_COMMA)) {
         // allows only numbers and +,-,*,/ symbols to display
-        event.returnValue = true;
+        if(operatorCount < 1 || event.keyCode >= ASCII_VALUE_ZERO && event.keyCode <= ASCII_VALUE_NINE ) {
+            event.returnValue = true;
+        } else {
+            event.returnValue = false;
+        }
         showValueInMainDisplayByKey(event.keyCode);
     } else if (event.keyCode === ASCII_VALUE_EQUAL) {
         // restricts '=' sign to show in display
         event.returnValue = false;
-        return calculateResult(isDeletePressed);
+        return calculateResult(isDeletePressed);   
     } else {
         // restricts all other keys
         event.returnValue = false;
     }
-}
+    }
 
 /*
  * showValueInMainDisplay() function Show values in the Calculator main display 
@@ -63,21 +67,26 @@ function showValueInMainDisplay(buttonValue) {
     showValueInHistoryDisplay(buttonValue);
     // buttonValue is a number isNaN() returns false
     if (isNaN(buttonValue) === false) {
+        operatorCount = 0;
         var tempButtonValue = buttonValue % 10;
         addDigitsToNumberArray(tempButtonValue);
-    } else if (digitLength !== 0) {
+    } else if (digitLength !== 0 && isOperatorPressed === false) {
         // buttonValue is a Symbol, this block is executed
         isOperatorPressed = true;
         digitLength = 0;
         isEqualPressed = false;
+        operatorCount++;
         numArrayIndex++;
         arraySymbol[symArrayIndex] = buttonValue;
+        //history1.value += arraySymbol[symArrayIndex];
+    } else {
+        operatorCount++;
     }
 
     //checking the number is single digit or not
-    if (digitLength !== 2) {
+    if (digitLength !== 2 && operatorCount < 2) {
         mainDisplay.value = buttonValue;
-    } else {
+    } else if(operatorCount < 1) {
         mainDisplay.value = actualValue;
     }
 }
@@ -88,9 +97,9 @@ function showValueInMainDisplay(buttonValue) {
 function showValueInHistoryDisplay(buttonValue) {
     var historyDisplay = document.getElementById("historyDisplay");
     var mainDisplay = document.getElementById("mainDisplay");
-    if ((isNaN(buttonValue) === true) && isEqualPressed === false) {
+    if ((isNaN(buttonValue) === true) && isEqualPressed === false && operatorCount < 2) {
         historyDisplay.value += mainDisplay.value;
-    } else if (digitLength === 0) {
+    } else if (digitLength === 0 && operatorCount < 2) {
         historyDisplay.value += arraySymbol[symArrayIndex];
         symArrayIndex++;
     }
@@ -130,7 +139,6 @@ function clearAllValue() {
     currentIndexLocation = 0;
     isDeletePressed = false;
     isEqualPressed = false;
-    keyboardKeyPressed = 0;
 }
 /*
  *  addDigitsToNumberArray() function adds a add digits as Values to the arrayNumber[]
@@ -175,16 +183,21 @@ function calculateResult(resultDelButton) {
         for (var iLoop = 0; iLoop < arrayNumber.length; iLoop++) {
             // adding numbers to the display
             tempDispValue += arrayNumber[iLoop];
-            //adding symbols to the display
+            if(iLoop !== arrayNumber.length - 1 ) {
+                tempDispValue += arraySymbol[iLoop];
+            } else if(iLoop === 2) {
+                tempDispValue += arraySymbol[iLoop];
+            }
+                
+            /*adding symbols to the display
             if (iLoop < arraySymbol.length && keyboardKeyPressed === 0 || iLoop < arraySymbol.length - 1 && keyboardKeyPressed === 1) {
                 tempDispValue += arraySymbol[iLoop + keyboardKeyPressed];
-            }
+            }*/
         }
         historyDisplay.value = tempDispValue;
     }
     // if equal button is clicked first time it displays the result
     if (isEqualPressed === false) {
-
         if (resultDelButton === false) {
             historyDisplay.value += mainDisplay.value;
         }
@@ -192,6 +205,9 @@ function calculateResult(resultDelButton) {
         tempValue = historyDisplay.value;
         var total = eval(tempValue);
         mainDisplay.value = total;
+        if(tempValue === '') {
+            mainDisplay.value = '';
+        }
         isEqualPressed = true;
         isDeletePressed = false;
         currentIndexLocation = arrayNumber.length;
@@ -230,10 +246,9 @@ function prevNxtKey(e) {
  */
 function showValueInMainDisplayByKey(keyValue) {
     var mainDisplay = document.getElementById("mainDisplay");
-    if (keyValue === ASCII_VALUE_ASTERISK || keyValue === ASCII_VALUE_PLUS || keyValue === ASCII_VALUE_MINUS || keyValue === ASCII_VALUE_SLASH) {
+    if ((keyValue === ASCII_VALUE_ASTERISK || keyValue === ASCII_VALUE_PLUS || keyValue === ASCII_VALUE_MINUS || keyValue === ASCII_VALUE_SLASH) && isOperatorPressed === false) {
         numArrayIndex++;
         isOperatorPressed = true;
-        symArrayIndex++;
         // inserting symbols into the array based on ASCII values
         switch (keyValue) {
             case ASCII_VALUE_ASTERISK:
@@ -248,19 +263,22 @@ function showValueInMainDisplayByKey(keyValue) {
                 // '-' key pressed
                 arraySymbol[symArrayIndex] = '-';
                 break;
-            case ASCII_VALUE_MINUS:
+            case ASCII_VALUE_SLASH:
                 // '/' key pressed
                 arraySymbol[symArrayIndex] = '/';
                 break;
         }
+        //history1.value += arraySymbol[symArrayIndex];
+        symArrayIndex++;
+        operatorCount++;
         if (isEqualPressed === true) {
             mainDisplay.value = '';
             isEqualPressed = false;
         }
-    } else {
+    } else if(keyValue >= ASCII_VALUE_ZERO && keyValue <= ASCII_VALUE_NINE ){
         // inserting numbers into the number array
         var buttonValue = keyValue - ASCII_VALUE_ZERO;
+        operatorCount = 0;
         addDigitsToNumberArray(buttonValue);
     }
-    keyboardKeyPressed = 1;
 }

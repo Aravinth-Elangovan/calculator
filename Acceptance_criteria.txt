@@ -1,0 +1,18 @@
+Acceptance Criteria
+
+1.Develop a calculator to maintain all the history values that can be checked at any instance.
+2.Basic options to be available to do addition,subraction,multiplication and division operations.
+3.History Values should be maintained for the whole calculation.
+4.Options must be available to traverse back and front through history values.
+5.Editing option is available,user can go back and front through the values in history to edit it.
+6.User input may be through buttons or keyboard number and symbol keys, all other keys are restricted.
+7.More than one operator is not allowed after each number.
+8.Main display logs each entry from the user, either it is a number or an operator.
+9.While checking previous values, if there is no change the user can give their next input without any deletion.
+10.Reset option is available to clear all values after finishing calculation.
+
+
+Backlogs:
+1.Operators in the history is also to be changed.
+2.User can completely remove some values selectedly from the history.
+3.Floating values is to be managed.
