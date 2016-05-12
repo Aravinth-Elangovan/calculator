@@ -177,15 +177,15 @@ function calculateResult(resultDelButton) {
     var mainDisplay = document.getElementById("mainDisplay");
     var tempValue = 0;
     if (resultDelButton === true) {
-        arrayNumber[currentIndexLocation] = mainDisplay.value;
+        if(currentIndexLocation !== numArrayIndex) {
+            arrayNumber[currentIndexLocation] = mainDisplay.value;
+        }
         var tempDispValue = '';
         // Updating the altered value in the History Display
         for (var iLoop = 0; iLoop < arrayNumber.length; iLoop++) {
             // adding numbers to the display
             tempDispValue += arrayNumber[iLoop];
             if(iLoop !== arrayNumber.length - 1 ) {
-                tempDispValue += arraySymbol[iLoop];
-            } else if(iLoop === 2) {
                 tempDispValue += arraySymbol[iLoop];
             }
                 
